@@ -1,0 +1,45 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+Package = modelo
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = SLR
+#RegularDefinitions
+L  : [A-Za-z]
+D  : [0-9]
+WS : [\ \t\n\r]
+COMMENT : "(*" [^ "*" ]* "*)"
+FL : ";"
+#Tokens
+: {WS}*
+:! {COMMENT}
+palavras : {L} ( {L} | {D} | _ )*
+fim : {FL}
+cmd_frente = palavras : "frente"
+cmd_esquerda = palavras : "esquerda"
+cmd_direita = palavras : "direita"
+cmd_pisca = palavras : "piscar"
+cond_azul = palavras : "azul"
+cond_amarelo = palavras : "amarelo"
+cond_verde = palavras : "verde"
+abreparentes : "("
+fechaparentes : ")"
+#NonTerminals
+<PROGRAMA>
+<COMANDOS>
+<MAIS_COMANDOS>
+<EXPRESSAO>
+<CONDICAO>
+<ROTINA>
+#Grammar
+<PROGRAMA>::= <ROTINA>;
+<ROTINA>::= <COMANDOS> abreparentes <CONDICAO> fechaparentes fim <MAIS_COMANDOS>;
+<COMANDOS>::= cmd_frente | cmd_esquerda | cmd_direita | cmd_pisca;
+<CONDICAO>::= cond_azul | cond_amarelo | cond_verde | î;
+<MAIS_COMANDOS>::= <ROTINA> | î;
